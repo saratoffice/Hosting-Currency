@@ -1,93 +1,18 @@
 const currencyToCountry = {
-  USD: "US",
-  EUR: "EU",
-  GBP: "GB",
-  AUD: "AU",
-  CHF: "CH",
-  CAD: "CA",
-  JPY: "JP",
-  EGP: "EG",
-  KRW: "KR",
-  DZD: "DZ",
-  PAB: "PA",
-  BHD: "BH",
-  MAD: "MA",
-  ZAR: "ZA",
-  IQD: "IQ",
-  BOB: "BO",
-  HKD: "HK",
-  THB: "TH",
-  TWD: "TW",
-  UZS: "UZ",
-  KWD: "KW",
-  ILS: "IL",
-  PEN: "PE",
-  TJS: "TJ",
-  OMR: "OM",
-  HUF: "HU",
-  UAH: "UA",
-  CLP: "CL",
-  SEK: "SE",
-  SGD: "SG",
-  CNY: "CN",
-  ISK: "IS",
-  AZN: "AZ",
-  HTG: "HT",
-  DOP: "DO",
-  LBP: "LB",
-  MYR: "MY",
-  IRR: "IR",
-  UYU: "UY",
-  ANG: "AN",
-  PHP: "PH",
-  XOF: "",
-  LYD: "LY",
-  JOD: "JO",
-  TRY: "TR",
-  NGN: "NG",
-  RSD: "RS",
-  NZD: "NZ",
-  CZK: "CZ",
-  BYN: "BY",
-  ARS: "AR",
-  NOK: "NO",
-  QAR: "QA",
-  BDT: "BD",
-  RON: "RO",
-  MDL: "MD",
-  CRC: "CR",
-  VES: "VE",
-  IDR: "ID",
-  MXN: "MX",
-  AMD: "AM",
-  PYG: "PY",
-  AED: "AE",
-  NPR: "NP",
-  XAF: "",
-  KGS: "KG",
-  BRL: "BR",
-  INR: "IN",
-  TND: "TN",
-  VND: "VN",
-  TMT: "TM",
-  DKK: "DK",
-  LKR: "LK",
-  BGN: "BG",
-  RUB: "RU",
-  GEL: "GE",
-  PKR: "PK",
-  PLN: "PL",
-  KZT: "KZ",
-  COP: "CO",
-  SAR: "SA",
+  USD: "US", EUR: "EU", GBP: "GB", AUD: "AU", CHF: "CH", CAD: "CA", JPY: "JP", EGP: "EG", KRW: "KR", DZD: "DZ",
+  BHD: "BH", MAD: "MA", ZAR: "ZA", IQD: "IQ", BOB: "BO", HKD: "HK", THB: "TH", TWD: "TW", UZS: "UZ", KWD: "KW",
+  ILS: "IL", PEN: "PE", TJS: "TJ", OMR: "OM", HUF: "HU", UAH: "UA", CLP: "CL", SEK: "SE", SGD: "SG", CNY: "CN",
+  ISK: "IS", AZN: "AZ", LBP: "LB", MYR: "MY", IRR: "IR", UYU: "UY", PHP: "PH", LYD: "LY", JOD: "JO", TRY: "TR",
+  NGN: "NG", RSD: "RS", NZD: "NZ", CZK: "CZ", BYN: "BY", ARS: "AR", NOK: "NO", QAR: "QA", BDT: "BD", RON: "RO",
+  MDL: "MD", CRC: "CR", VES: "VE", IDR: "ID", MXN: "MX", AMD: "AM", PYG: "PY", AED: "AE", NPR: "NP", KGS: "KG",
+  BRL: "BR", INR: "IN", TND: "TN", VND: "VN", TMT: "TM", DKK: "DK", LKR: "LK", BGN: "BG", RUB: "RU", GEL: "GE",
+  PKR: "PK", PLN: "PL", KZT: "KZ", COP: "CO", SAR: "SA"
 };
 
 const exchangeRates = { usd: 1 };
-const inputAmount = document.querySelector(
-  ".converter-container .input-amount"
-);
-const result = document.querySelector(".converter-container .result");
-const swapBtn = document.querySelector(".converter-container .swap-btn");
+const inputAmount = document.querySelector(".input-amount");
+const result = document.querySelector(".result");
+const swapBtn = document.querySelector(".swap-btn");
 
 const currentValues = {
   fromCurrency: "USD - U.S. Dollar",
@@ -95,243 +20,130 @@ const currentValues = {
   fromCode: "USD",
   toCurrency: "EUR - Euro",
   toFlag: "https://www.countryflagicons.com/FLAT/64/EU.png",
-  toCode: "EUR",
+  toCode: "EUR"
 };
 
 const convert = () => {
   const inputValue = parseFloat(inputAmount.value);
-  const fromCurrencyValue = document
-    .querySelector("#from .currency-input")
-    .dataset.selectedCurrencyCode.toLowerCase();
-  const toCurrencyValue = document
-    .querySelector("#to .currency-input")
-    .dataset.selectedCurrencyCode.toLowerCase();
-
-  const convertedValue =
-    (inputValue * exchangeRates[toCurrencyValue]) /
-    exchangeRates[fromCurrencyValue];
-
-  const resultValue = `<span class='result-currency'>${toCurrencyValue}</span> ${convertedValue.toFixed(
-    2
-  )}`;
-
-  result.innerHTML = isNaN(convertedValue) ? "Invalid Input" : resultValue;
-};
-
-swapBtn.addEventListener("click", () => {
-  const tempFromCurrency = currentValues.fromCurrency;
-  const tempFromFlag = currentValues.fromFlag;
-  const tempFromCode = currentValues.fromCode;
-
-  currentValues.fromCurrency = currentValues.toCurrency;
-  currentValues.fromFlag = currentValues.toFlag;
-  currentValues.fromCode = currentValues.toCode;
-
-  currentValues.toCurrency = tempFromCurrency;
-  currentValues.toFlag = tempFromFlag;
-  currentValues.toCode = tempFromCode;
-
-  updateValues();
-
-  convert();
-});
-
-const createFlagImage = (currencyCode) => {
-  const countryCode = currencyToCountry[currencyCode];
-  const img = document.createElement("img");
-
-  if (countryCode === "" || !countryCode) {
-    img.src = "images/flag-placeholder.png";
-  } else {
-    img.src = `https://www.countryflagicons.com/FLAT/64/${countryCode}.png`;
+  const fromCode = document.querySelector("#from .currency-input").dataset.selectedCurrencyCode?.toLowerCase();
+  const toCode = document.querySelector("#to .currency-input").dataset.selectedCurrencyCode?.toLowerCase();
+  if (!fromCode || !toCode || isNaN(inputValue)) {
+    result.textContent = "Invalid Input";
+    return;
   }
-
-  img.classList.add("flag-icion");
-  return img;
+  const converted = (inputValue * exchangeRates[toCode]) / exchangeRates[fromCode];
+  result.innerHTML = `<span class="result-currency">${toCode.toUpperCase()}</span> ${converted.toFixed(2)}`;
 };
 
 const setInputValues = (currency, flag, code, id) => {
-  const dropdown = document.querySelector(`#${id}`);
-  const currencyInput = dropdown.querySelector(".currency-input");
-  const inputFlag = dropdown.querySelector(".input-flag");
-
-  currencyInput.value = currency;
-  inputFlag.src = flag;
-  inputFlag.style.display = "block";
-  currencyInput.style.paddingLeft = "48px";
-  currencyInput.dataset.selectedCurrencyCode = code;
-};
-
-const updateValues = () => {
-  setInputValues(
-    currentValues.fromCurrency,
-    currentValues.fromFlag,
-    currentValues.fromCode,
-    "from"
-  );
-
-  setInputValues(
-    currentValues.toCurrency,
-    currentValues.toFlag,
-    currentValues.toCode,
-    "to"
-  );
+  const dropdown = document.getElementById(id);
+  const input = dropdown.querySelector(".currency-input");
+  const flagImg = dropdown.querySelector(".input-flag");
+  input.value = currency;
+  flagImg.src = flag;
+  input.dataset.selectedCurrencyCode = code;
 };
 
 const createOption = (code, name, id) => {
-  if (!id) return;
-
-  const dropdown = document.querySelector(`#${id}`);
+  const dropdown = document.getElementById(id);
+  const options = dropdown.querySelector(".options");
   const option = document.createElement("div");
-  option.classList.add("option");
+  option.className = "option";
 
-  const flagImage = createFlagImage(code);
+  const flag = document.createElement("div");
+  flag.className = "flag";
+  const flagImg = document.createElement("img");
 
-  const flagDiv = document.createElement("div");
-  flagDiv.classList.add("flag");
-  flagDiv.appendChild(flagImage);
+  const countryCode = currencyToCountry[code];
+  if (countryCode) {
+    flagImg.src = `https://www.countryflagicons.com/FLAT/64/${countryCode}.png`;
+  } else {
+    console.warn(`Missing country mapping for currency code: ${code}`);
+    flagImg.src = "https://upload.wikimedia.org/wikipedia/commons/e/e3/Unofficial_flag_placeholder.png";
+  }
 
-  const currencyText = `${code} - ${name}`;
-  const currencyDiv = document.createElement("div");
-  currencyDiv.textContent = currencyText;
+  flag.appendChild(flagImg);
 
-  option.appendChild(flagDiv);
-  option.appendChild(currencyDiv);
+  const text = document.createElement("div");
+  text.textContent = `${code} - ${name}`;
+  option.append(flag, text);
 
   option.addEventListener("click", () => {
     options.classList.remove("active");
-    setInputValues(currencyText, flagImage.src, code, id);
-
+    setInputValues(`${code} - ${name}`, flagImg.src, code, id);
     if (id === "from") {
-      currentValues.fromCurrency = currencyText;
-      currentValues.fromFlag = flagImage.src;
-      currentValues.fromCode = code;
-    } else if (id === "to") {
-      currentValues.toCurrency = currencyText;
-      currentValues.toFlag = flagImage.src;
-      currentValues.toCode = code;
+      Object.assign(currentValues, { fromCurrency: text.textContent, fromFlag: flagImg.src, fromCode: code });
+    } else {
+      Object.assign(currentValues, { toCurrency: text.textContent, toFlag: flagImg.src, toCode: code });
     }
-
     convert();
   });
 
-  const options = dropdown.querySelector(".options");
   options.appendChild(option);
 };
 
+const filterOptions = (id) => {
+  const input = document.querySelector(`#${id} .currency-input`);
+  const term = input.value.toLowerCase();
+  document.querySelectorAll(`#${id} .option`).forEach(option => {
+    option.style.display = option.textContent.toLowerCase().includes(term) ? "flex" : "none";
+  });
+};
+
 const addEventListeners = (id) => {
-  const dropdown = document.querySelector(`#${id}`);
-  const currencyInput = dropdown.querySelector(".currency-input");
-  const inputFlag = dropdown.querySelector(".input-flag");
+  const dropdown = document.getElementById(id);
+  const input = dropdown.querySelector(".currency-input");
   const options = dropdown.querySelector(".options");
-  const allOptions = dropdown.querySelectorAll(".option");
 
-  currencyInput.addEventListener("input", () => {
-    filterOptions(id, allOptions);
-  });
-
-  currencyInput.addEventListener("click", () => {
-    if (id === "from") {
-      const toDropdownOptions = document.querySelector("#to .options");
-      toDropdownOptions.classList.remove("active");
-
-      setInputValues(
-        currentValues.toCurrency,
-        currentValues.toFlag,
-        currentValues.toCode,
-        "to"
-      );
-    } else if (id === "to") {
-      const fromDropdownOptions = document.querySelector("#from .options");
-      fromDropdownOptions.classList.remove("active");
-
-      setInputValues(
-        currentValues.fromCurrency,
-        currentValues.fromFlag,
-        currentValues.fromCode,
-        "from"
-      );
-    }
-
-    inputFlag.style.display = "none";
-    currencyInput.value = "";
-    currencyInput.style.paddingLeft = "16px";
+  input.addEventListener("input", () => filterOptions(id));
+  input.addEventListener("click", () => {
+    document.querySelectorAll(".options").forEach(opt => opt.classList.remove("active"));
     options.classList.add("active");
-
-    if (allOptions) {
-      filterOptions(id, allOptions);
-    }
-  });
-};
-
-const init = async () => {
-  try {
-    const res = await fetch("http://www.floatrates.com/daily/usd.json");
-    const data = await res.json();
-
-    if (res.ok) {
-      console.log(data);
-      createOption("USD", "U.S. Dollar", "from");
-      createOption("USD", "U.S. Dollar", "to");
-
-      for (const currencyCode in data) {
-        const currencyInfo = data[currencyCode];
-        const { code, name } = currencyInfo;
-        createOption(code, name, "from");
-        createOption(code, name, "to");
-
-        exchangeRates[currencyCode] = currencyInfo.rate;
-      }
-
-      updateValues();
-
-      addEventListeners("from");
-      addEventListeners("to");
-
-      convert();
-    }
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-init();
-
-const filterOptions = (id, allOptions) => {
-  const dropdown = document.querySelector(`#${id}`);
-  const currencyInput = dropdown.querySelector(".currency-input");
-  const searchTerm = currencyInput.value.toLowerCase();
-
-  allOptions.forEach((option) => {
-    const currencyText = option.textContent.toLowerCase();
-
-    if (currencyText.includes(searchTerm)) {
-      option.style.display = "flex";
-    } else {
-      option.style.display = "none";
-    }
+    input.value = "";
   });
 };
 
 document.addEventListener("click", (e) => {
-  const from = document.querySelector("#from");
-  const to = document.querySelector("#to");
-  const fromOptions = document.querySelector("#from .options");
-  const toOptions = document.querySelector("#to .options");
-
-  if (
-    e.target !== from &&
-    e.target !== to &&
-    !from.contains(e.target) &&
-    !to.contains(e.target) &&
-    !toOptions.contains(e.target) &&
-    !fromOptions.contains(e.target)
-  ) {
-    toOptions.classList.remove("active");
-    fromOptions.classList.remove("active");
-
+  if (!e.target.closest(".dropdown-container")) {
+    document.querySelectorAll(".options").forEach(opt => opt.classList.remove("active"));
     updateValues();
   }
 });
 
+const updateValues = () => {
+  setInputValues(currentValues.fromCurrency, currentValues.fromFlag, currentValues.fromCode, "from");
+  setInputValues(currentValues.toCurrency, currentValues.toFlag, currentValues.toCode, "to");
+};
+
+swapBtn.addEventListener("click", () => {
+  [currentValues.fromCurrency, currentValues.toCurrency] = [currentValues.toCurrency, currentValues.fromCurrency];
+  [currentValues.fromFlag, currentValues.toFlag] = [currentValues.toFlag, currentValues.fromFlag];
+  [currentValues.fromCode, currentValues.toCode] = [currentValues.toCode, currentValues.fromCode];
+  updateValues();
+  convert();
+});
+
 inputAmount.addEventListener("input", convert);
+
+const init = async () => {
+  const res = await fetch("https://www.floatrates.com/daily/usd.json");
+  const data = await res.json();
+
+  // Add USD manually
+  createOption("USD", "U.S. Dollar", "from");
+  createOption("USD", "U.S. Dollar", "to");
+
+  for (const key in data) {
+    const { code, name, rate } = data[key];
+    exchangeRates[code.toLowerCase()] = rate;
+    createOption(code, name, "from");
+    createOption(code, name, "to");
+  }
+
+  updateValues();
+  addEventListeners("from");
+  addEventListeners("to");
+  convert();
+};
+
+init();
